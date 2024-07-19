@@ -1,0 +1,9 @@
+<div class="container-fluid">
+  <app-navbar [userLoggedEmail]="userLoggedEmail"></app-navbar>
+</div>
+<br><br><br><br><br>
+<div *ngIf="!(isLoginPage || isRegisterPage)">
+ <app-home></app-home>
+</div>
+<router-outlet></router-outlet>
+<app-footer></app-footer>

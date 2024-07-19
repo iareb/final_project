@@ -1,0 +1,16 @@
+p {
+  font-weight: bold;
+  text-align: center !important;
+  font-size: 22px;
+}
+
+form {
+  text-align: center;
+}
+form > label {
+  font-style: italic;
+}
+
+.error {
+  color: red;
+}

@@ -1,0 +1,72 @@
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                     class="img-fluid" alt="Sample image">
+              </div>
+
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Unisciti alla nostra comunità</p>
+
+                <form (ngSubmit)="onSubmitForm(form)" #form=ngForm class="mx-1 mx-md-4">
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="bi bi-person-circle h4" style="margin: 0.25em;"></i>
+                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="name">Nome</label>
+                      <input required [(ngModel)]="this.userRegistration.name" type="text" id="name" name="name" #name=ngModel class="form-control form-control-lg" />
+                      <div class="error" *ngIf="name.errors?.['required']">Il nome è obbligatorio.</div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="bi bi-person-circle h4" style="margin: 0.25em;"></i>
+                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="lastname">Cognome</label>
+                      <input required [(ngModel)]="this.userRegistration.lastName" type="text" id="lastname" name="lastname" #lastname=ngModel class="form-control form-control-lg" />
+                      <div class="error" *ngIf="lastname.errors?.['required']">Il cognome è obbligatorio.</div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="bi bi-envelope h4" style="margin: 0.25em;"></i>
+                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="email">Email</label>
+                      <input required [(ngModel)]="this.userRegistration.email" type="email" id="email" name="email"
+                             #email=ngModel class="form-control form-control-lg" />
+                      <div class="error" *ngIf="email.errors?.['required']">L'email è obbligatoria.</div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="bi bi-key-fill h3" style="margin: 0.25em;"></i>
+                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="password">Password</label>
+                      <input required [(ngModel)]="this.userRegistration.password" type="password" id="password" name="password"
+                             #password=ngModel class="form-control form-control-lg" minlength="6" maxlength="20" />
+                      <div class="error" *ngIf="password.errors?.['required']">La password è obbligatoria.</div>
+                      <div class="error" *ngIf="name.errors?.['minlength']">La password dev'esssere di almeno 6 caratteri.</div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Registrati</button>
+                  </div>
+
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

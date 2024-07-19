@@ -1,0 +1,40 @@
+<nav id="top-navbar" class="navbar border-bottom border-body border-black fixed-top" style="background-color: #D1E8E2">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="#" id="title">Weather App</a>
+    <ul class="navbar nav me-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <dt>
+        <li id="search-bar">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search">
+            <div class="input-group-btn">
+              <button class="btn btn-default btn-lg" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
+        </li>
+      </dt>
+    </ul>
+
+    <ul class="navbar nav ml-auto">
+      <li class="nav-item">
+        <button *ngIf="!this.userService.isLogged" (click)="request('login')" class="btn btn-md btn-dark btn-rounded" style="margin-right: 0.75em" routerLink="/login">
+          Login
+        </button>
+
+        <a *ngIf="this.userService.isLogged" class="nav-link" href="#"><span style="margin-right:0.5em;"><i class="bi bi-person-circle h4"></i></span>
+          <span>{{this.userService.userEmail}}</span></a>
+      </li>
+      <li class="nav-item">
+        <button *ngIf="!this.userService.isLogged" (click)="request('register')" class="btn btn-md btn-dark btn-rounded" style="margin-right: 0.75em" routerLink="/register">
+          Registrati
+        </button>
+      </li>
+
+    </ul>
+  </div>
+</nav>

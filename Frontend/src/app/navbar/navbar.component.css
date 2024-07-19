@@ -1,0 +1,23 @@
+#title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+ul > li > a{
+  margin-left: 0;
+}
+
+#search-bar {
+  margin-left: 250px;
+  width: 450px !important;
+}
+
+a {
+  font-size: 18px;
+  color: black;
+}
+
+
+.btn-md {
+  width: 100px;
+}
