@@ -4,7 +4,7 @@ import {RegisterComponent} from "./register/register.component";
 import {LoginComponent} from "./login/login.component";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {FooterComponent} from "./footer/footer.component";
-import {FormsModule, NgForm} from "@angular/forms";
+import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {UserService} from "../services/user/user.service";
 import {UserDto} from "../models/UserDto";

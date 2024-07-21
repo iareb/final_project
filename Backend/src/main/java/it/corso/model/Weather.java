@@ -19,7 +19,8 @@ public class Weather {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "weather_id")
 	private int id;
-
+	
+	@Column(name = "timestamp")
     private LocalDateTime timestamp;
 
     @Column(name = "current_temperature")
