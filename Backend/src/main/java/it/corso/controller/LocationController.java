@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-
 import it.corso.dto.LocationDto;
-import it.corso.model.Location;
 import it.corso.service.LocationService;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

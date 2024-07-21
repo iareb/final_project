@@ -1,58 +1,60 @@
-<!--
-<div class="col">
-  <div class="card h-50">
-    <img class="card-img-top" src="" alt="Image unavailable">
-    <div class="card-body">
-      <p class="card-text text-center fw-bold">{{location.name}}</p>
-      <p class="card-text text-center">{{location.country}}</p>
-    </div>
-    <div class="card-footer d-flex justify-content-center">
-      <button type="button" class="btn btn-dark" >Salva info</button>
-    </div>
-  </div>
-</div>
--->
-<div>
-  <!-- Informazioni attuali -->
-  <div class="card mb-3">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img src="" class="img-fluid rounded-start" alt="Weather Icon">
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">{{ location.name }}, {{ location.country }}</h5>
-          <p class="card-text">Temperatura Attuale: {{ weather.currentTemperature }}°C</p>
-          <p class="card-text">Velocità del Vento Attuale: {{ weather.currentWindSpeed }} km/h</p>
-          <p class="card-text"><small class="text-muted">Aggiornato il {{ weather.timestamp | date:'short' }}</small></p>
+<div class="container-fluid px-1 px-sm-3 py-5 mx-auto">
+  <div class="row d-flex justify-content-center">
+    <div class="row card0">
+      <div class="card1 col-lg-8 col-md-7">
+        <div class="text-center">
+          <img class="image mt-5" src="https://i.imgur.com/M8VyA2h.png">
+        </div>
+        <div class="row px-3 mt-3 mb-3">
+          <h1 class="large-font mr-3">{{weather.currentTemperature}}&#176;</h1>
+          <div class="d-flex flex-column mr-3">
+            <h2 class="mt-3 mb-0">{{location.name}}, {{location.country}}</h2>
+            <h6>{{ weather.timestamp | date:'short' }}</h6>
+          </div>
+          <div class="d-flex flex-column text-center">
+            <h3 class="bi bi-brightness-high"></h3>
+            <h4>Soleggiato</h4>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+      <div class="card2 col-lg-4 col-md-5">
+       <div class="mr-5">
+         <br>
+          <p>Informazioni attuali</p>
+          <div class="row px-3">
+            <p class="light-text">Temperatura</p>
+            <p class="ml-auto">{{weather.currentTemperature}} °C</p>
+          </div>
+          <div class="row px-3">
+            <p class="light-text">Velocità del vento</p>
+            <p class="ml-auto">{{weather.currentWindSpeed}} km/h</p>
+          </div>
 
-  <!-- Informazioni orarie -->
-  <div id="hourlyWeatherCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div *ngFor="let hour of weather.hourlyWeather; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
-        <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
-          <div class="text-center">
-            <h5>{{ hour.time | date:'shortTime' }}</h5>
-            <p>Temperatura: {{ hour.temperature }}°C</p>
-            <p>Umidità: {{ hour.humidity }}%</p>
-            <p>Velocità del Vento: {{ hour.windSpeed }} km/h</p>
+          <div class="line mt-3"></div>
+         <br>
+          <p>Informazioni orarie</p>
+          <div id="hourlyWeatherCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div *ngFor="let hour of weather.hourlyWeather; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
+                <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+                  <div class="text-center">
+                    <h5>{{ hour.time | date:'shortTime' }}</h5>
+                    <p>Temperatura: {{ hour.temperature }}°C</p>
+                    <p>Umidità: {{ hour.humidity }}%</p>
+                    <p>Velocità del Vento: {{ hour.windSpeed }} km/h</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#hourlyWeatherCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#hourlyWeatherCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#hourlyWeatherCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#hourlyWeatherCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </button>
   </div>
 </div>
-
-

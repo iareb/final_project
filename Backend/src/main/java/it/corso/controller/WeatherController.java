@@ -8,7 +8,6 @@ import it.corso.service.WeatherService;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -67,33 +66,20 @@ public class WeatherController {
 	}
 	
 	
-	@POST
-	@Path("/fetch/{locationId}/current")
+	@GET
+	@Path("/fetch/{locationId}/save")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response fetchCurrentWeatherData(@PathParam("locationId") int locationId) {
+	public Response fetchAndSaveWeatherData(@PathParam("locationId") int locationId) {
 		try {
-			WeatherDto weather = weatherService.fetchCurrentWeather(locationId);
+			WeatherDto weather = weatherService.fetchAndSaveWeatherData(locationId);
 			return Response.status(Response.Status.OK).entity(weather).build();
 		} 
 		catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
-	
-	@POST
-	@Path("/fetch/{locationId}/hourly")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response fetchHourlyWeatherData(@PathParam("locationId") int locationId) {
-		try {
-			WeatherDto weather = weatherService.fetchHourlyWeather(locationId);
-			return Response.status(Response.Status.OK).entity(weather).build();
-		} 
-		catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-	}
+
 	
 	@GET
 	@Path("/location")

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, Observable, retry, throwError} from "rxjs";
 import {Location} from "../../models/Location";
 
@@ -10,15 +10,9 @@ export class LocationService {
 
   constructor(private http:HttpClient) { }
 
-  getLocationById(id: number): Observable<Location> {
-    return this.http.get<Location>('http://localhost:8080/api/location/' + id).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
-  }
-
-  getAllLocations(): Observable<Location[]> {
-    return this.http.get<Location[]>('http://localhost:8080/api/location/all').pipe(
+  getLocationByName(name: string): Observable<Location> {
+    const params = new HttpParams().set("name", name);
+    return this.http.get<Location>('http://localhost:8080/api/location/search', {params}).pipe(
       retry(3),
       catchError(this.handleError)
     )

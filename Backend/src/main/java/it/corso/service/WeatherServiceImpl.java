@@ -39,9 +39,53 @@ public class WeatherServiceImpl implements WeatherService {
 		Weather weather = optional.get();
 		return modelMapper.map(weather, WeatherDto.class);
 	}
-
+	
 	@Override
 	public WeatherDto fetchWeatherData(int locationId) {
+		Optional<Location> optional = locationDao.findById(locationId);
+	    Weather weather = new Weather();
+		if (optional.isPresent()) {
+			
+		   Location location = optional.get();	    
+		   WebClient webClient = webClientBuilder.build();
+	       try {
+	    	   
+		    	Map<String, Object> responseBody = webClient.get()
+		    			.uri(API_URL, location.getLatitude(), location.getLongitude())
+		    			.retrieve()
+		    			.bodyToMono(Map.class)
+		    			.block();
+			   
+		      if (responseBody != null) {
+		        
+			       Map<String, Object> currentWeather = (Map<String, Object>) responseBody.get("current");
+			       Map<String, Object> hourlyData = (Map<String, Object>) responseBody.get("hourly");
+			       
+			       weather.setLocation(location);
+			       weather.setTimestamp(LocalDateTime.now());
+			       weather.setCurrentTemperature((Double) currentWeather.get("temperature_2m"));
+			       weather.setCurrentWindSpeed((Double) currentWeather.get("wind_speed_10m"));
+	
+		       	   weather.setHourlyTime(new ObjectMapper().writeValueAsString(hourlyData.get("time")));
+		    	   weather.setHourlyTemperature(new ObjectMapper().writeValueAsString(hourlyData.get("temperature_2m")));
+		    	   weather.setHourlyHumidity(new ObjectMapper().writeValueAsString(hourlyData.get("relative_humidity_2m")));
+		           weather.setHourlyWindSpeed(new ObjectMapper().writeValueAsString(hourlyData.get("wind_speed_10m")));
+	      	}
+		    else {
+              throw new RuntimeException("Empty response from Open-Meteo");
+          	 }
+	       }
+	       catch (JsonProcessingException e) {
+			e.printStackTrace();
+	       }
+		}
+		
+		WeatherDto dto = modelMapper.map(weather, WeatherDto.class);
+		return dto;
+	}
+
+	@Override
+	public WeatherDto fetchAndSaveWeatherData(int locationId) {
 		
 		Optional<Location> optional = locationDao.findById(locationId);
 	    Weather weather = new Weather();
@@ -95,82 +139,12 @@ public class WeatherServiceImpl implements WeatherService {
 	}
 
 	@Override
-	public WeatherDto fetchCurrentWeather(int locationId) {
-		
-		Optional<Location> optional = locationDao.findById(locationId);
-		Weather weather = new Weather();
-		if (optional.isPresent()) {
-	
-			Location location = optional.get();
-			WebClient webClient = webClientBuilder.build();
-	
-		    Map<String, Object> responseBody = webClient.get()
-		    		.uri(API_URL_CURRENT_WEATHER, location.getLatitude(), location.getLongitude())
-		    		.retrieve()
-		    		.bodyToMono(Map.class)
-		   			.block();
-		    	
-			if (responseBody != null) {
-			        
-				Map<String, Object> currentWeather = (Map<String, Object>) responseBody.get("current");
-				weather.setLocation(location);
-		        weather.setTimestamp(LocalDateTime.now());
-		        weather.setCurrentTemperature((Double) currentWeather.get("temperature_2m"));
-		        weather.setCurrentWindSpeed((Double) currentWeather.get("wind_speed_10m"));
-		        weatherDao.save(weather);
-			}		
-		}
-		WeatherDto dto = modelMapper.map(weather, WeatherDto.class);
-		return dto;
-	}
-
-	@Override
-	public WeatherDto fetchHourlyWeather(int locationId) {
-		
-		Optional<Location> optional = locationDao.findById(locationId);
-		Weather weather = new Weather();
-		if (optional.isPresent()) {
-	
-			Location location = optional.get();
-			WebClient webClient = webClientBuilder.build();
-			
-			try {
-			    Map<String, Object> responseBody = webClient.get()
-			    		.uri(API_URL_HOURLY_WEATHER, location.getLatitude(), location.getLongitude())
-			    		.retrieve()
-			    		.bodyToMono(Map.class)
-			   			.block();
-			    	
-				if (responseBody != null) {
-				        
-				    Map<String, Object> hourlyData = (Map<String, Object>) responseBody.get("hourly");
-				       
-				    weather.setLocation(location);
-			       	weather.setHourlyTime(new ObjectMapper().writeValueAsString(hourlyData.get("time")));
-			    	weather.setHourlyTemperature(new ObjectMapper().writeValueAsString(hourlyData.get("temperature_2m")));
-			        weather.setHourlyHumidity(new ObjectMapper().writeValueAsString(hourlyData.get("relative_humidity_2m")));
-			        weather.setHourlyWindSpeed(new ObjectMapper().writeValueAsString(hourlyData.get("wind_speed_10m")));
-			        weatherDao.save(weather);
-					}
-			}
-			catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-		}
-		WeatherDto dto = modelMapper.map(weather, WeatherDto.class);
-		return dto;
-	}
-
-	@Override
 	public WeatherDto getWeatherByLocationName(String name) {
 		Optional<Location> optional = locationDao.findByName(name);
 		if (optional.isPresent()) {
 			Location location = optional.get();
-			Optional<Weather> weatherOptional = weatherDao.findByLocationId(location.getId());
-			if (weatherOptional.isPresent()) {
-				Weather weather = weatherOptional.get();
-				return modelMapper.map(weather, WeatherDto.class);
-			}
+			WeatherDto dto = fetchWeatherData(location.getId());
+			return dto;
 		}
 		return null;
 	}

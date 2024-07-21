@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable, retry, throwError} from "rxjs";
 import {WeatherDto} from "../../models/WeatherDto";
 
@@ -12,8 +12,9 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  getWeatherData(locationId: number): Observable<WeatherDto> {
-    return this.http.get<WeatherDto>(this.apiUrl + '/fetch/' + locationId)
+  fetchWeatherDataByLocationName(name: string): Observable<WeatherDto> {
+    const params = new HttpParams().set("name", name);
+    return this.http.get<WeatherDto>(this.apiUrl + '/location', {params})
       .pipe(
         map(data => {
           const hourlyTime = JSON.parse(data.hourlyTime);
@@ -37,22 +38,6 @@ export class WeatherService {
             ...data, hourlyWeather
           };
         }),
-        retry(3),
-        catchError(this.handleError)
-      );
-  }
-
-  getCurrentWeather(id: number): Observable<WeatherDto> {
-    return this.http.get<WeatherDto>(this.apiUrl + '/fetch/' + id + '/current')
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
-  }
-
-  getHourlyWeather(id: number): Observable<WeatherDto> {
-    return this.http.get<WeatherDto>(this.apiUrl + '/fetch/' + id + '/hourly')
-      .pipe(
         retry(3),
         catchError(this.handleError)
       );

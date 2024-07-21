@@ -1,19 +1,15 @@
 <div class="container-lg border py-3 my-3">
   <p id="header">Scopri il meteo della tua zona</p>
   <div class="input-group" id="search-bar">
-    <!-- <input (input)="onUpdate($event)" type="text" class="form-control" placeholder="Cerca i corsi che fanno per te"> -->
-    <input  type="text" class="form-control" placeholder="Cerca la località">
+    <input [(ngModel)]="cityName" type="text" class="form-control" placeholder="Cerca la località">
     <div class="input-group-btn">
-      <button class="btn btn-default btn-lg" type="submit">
+      <button (click)="searchCity(cityName)" class="btn btn-default btn-lg" type="submit">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </div>
-  <br>
   <div class="container-lg border py-3 my-3">
-    <!-- <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3"> -->
-      <app-weather *ngFor="let location of locations" [location]="location" [weather]="weather"></app-weather>
-    <!-- </div> -->
+      <app-weather [location]="location" [weather]="weather"></app-weather>
   </div>
   <br>
 </div>

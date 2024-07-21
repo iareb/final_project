@@ -14,7 +14,6 @@ public interface WeatherService {
 	WeatherDto getWeatherByLocationName(String name);
 	
 	WeatherDto fetchWeatherData(int locationId);
-	WeatherDto fetchCurrentWeather(int locationId);
-	WeatherDto fetchHourlyWeather(int locationId);
+	WeatherDto fetchAndSaveWeatherData(int locationId);
 	
 }
