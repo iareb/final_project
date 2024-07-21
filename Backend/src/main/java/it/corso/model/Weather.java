@@ -1,47 +1,48 @@
 package it.corso.model;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "weather")
 public class Weather {
 	
 	@Id
-	@Column(name = "weather_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "weather_id")
 	private int id;
-	
-	@Column(name = "latitude", nullable = false)
-	private double latitude;
-	
-	@Column(name = "longitude", nullable = false)
-	private double longitude;
-	
+
+    private LocalDateTime timestamp;
+
+    @Column(name = "current_temperature")
+    private double currentTemperature;
+
+    @Column(name = "current_wind_speed")
+    private double currentWindSpeed;
+
+    @Column(name = "hourly_time")
+    private String hourlyTime; // JSON data as a String
+
+    @Column(name = "hourly_temperature")
+    private String hourlyTemperature; // JSON data as a String
+
+    @Column(name = "hourly_humidity")
+    private String hourlyHumidity; // JSON data as a String
+
+    @Column(name = "hourly_wind_speed")
+    private String hourlyWindSpeed; 
+    
     @ManyToOne
-    @JoinColumns({
-        @JoinColumn(name = "latitude", referencedColumnName = "latitude", insertable = false, updatable = false),
-        @JoinColumn(name = "longitude", referencedColumnName = "longitude", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "location_id", nullable = false)
     private Location location;
-	
-	@OneToMany(mappedBy = "weather", cascade = CascadeType.ALL)
-	private List<HourlyTime> hourlyTimes;
-	
-	@OneToMany(mappedBy = "weather", cascade = CascadeType.ALL)
-	private List<HourlyTemperature> hourlyTemperatures;
 
 	public int getId() {
 		return id;
@@ -50,21 +51,61 @@ public class Weather {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public double getLatitude() {
-		return latitude;
+
+	public LocalDateTime getTimestamp() {
+		return timestamp;
 	}
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
 	}
 
-	public double getLongitude() {
-		return longitude;
+	public double getCurrentTemperature() {
+		return currentTemperature;
 	}
 
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+	public void setCurrentTemperature(double currentTemperature) {
+		this.currentTemperature = currentTemperature;
+	}
+
+	public double getCurrentWindSpeed() {
+		return currentWindSpeed;
+	}
+
+	public void setCurrentWindSpeed(double currentWindSpeed) {
+		this.currentWindSpeed = currentWindSpeed;
+	}
+
+	public String getHourlyTime() {
+		return hourlyTime;
+	}
+
+	public void setHourlyTime(String hourlyTime) {
+		this.hourlyTime = hourlyTime;
+	}
+
+	public String getHourlyTemperature() {
+		return hourlyTemperature;
+	}
+
+	public void setHourlyTemperature(String hourlyTemperature) {
+		this.hourlyTemperature = hourlyTemperature;
+	}
+
+	public String getHourlyHumidity() {
+		return hourlyHumidity;
+	}
+
+	public void setHourlyHumidity(String hourlyHumidity) {
+		this.hourlyHumidity = hourlyHumidity;
+	}
+
+	public String getHourlyWindSpeed() {
+		return hourlyWindSpeed;
+	}
+
+	public void setHourlyWindSpeed(String hourlyWindSpeed) {
+		this.hourlyWindSpeed = hourlyWindSpeed;
 	}
 
 	public Location getLocation() {
@@ -74,55 +115,5 @@ public class Weather {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	
-	public List<HourlyTime> getHourlyTimes() {
-		return hourlyTimes;
-	}
 
-	public void setHourlyTimes(List<HourlyTime> hourlyTimes) {
-		this.hourlyTimes = hourlyTimes;
-	}
-
-	public List<HourlyTemperature> getHourlyTemperatures() {
-		return hourlyTemperatures;
-	}
-
-	public void setHourlyTemperatures(List<HourlyTemperature> hourlyTemperatures) {
-		this.hourlyTemperatures = hourlyTemperatures;
-	}	
-	
-	
-	// Inner Hourly class to match JSON structure
-    public static class Hourly {
-        private List<String> time;
-        private List<Double> temperature_2m;
-
-        // Getters and setters
-        public List<String> getTime() {
-            return time;
-        }
-
-        public void setTime(List<String> time) {
-            this.time = time;
-        }
-
-        public List<Double> getTemperature_2m() {
-            return temperature_2m;
-        }
-
-        public void setTemperature_2m(List<Double> temperature_2m) {
-            this.temperature_2m = temperature_2m;
-        }
-    }
-
-    @Transient
-    private Hourly hourly;
-
-    public Hourly getHourly() {
-        return hourly;
-    }
-
-    public void setHourly(Hourly hourly) {
-        this.hourly = hourly;
-    }
 }

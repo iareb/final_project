@@ -1,10 +1,14 @@
 package it.corso.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,21 +16,24 @@ import jakarta.persistence.Table;
 public class Location {
 	
 	@Id
-	@Column(name = "location_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "location_id")
 	private int id;
 	
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "latitude", nullable = false)
-	private double latitude;
-	
-	@Column(name = "longitude", nullable = false)
-	private double longitude;
-	
 	@Column(name = "country")
 	private String country;
+	
+	@Column(name = "latitude")
+	private double latitude;
+	
+	@Column(name = "longitude")
+	private double longitude;
+	
+	@OneToMany(mappedBy = "location", fetch = FetchType.EAGER)
+	private List<Weather> weathers;
 
 	public int getId() {
 		return id;
@@ -42,6 +49,14 @@ public class Location {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public double getLatitude() {
@@ -60,13 +75,12 @@ public class Location {
 		this.longitude = longitude;
 	}
 
-
-	public String getCountry() {
-		return country;
+	public List<Weather> getWeathers() {
+		return weathers;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setWeathers(List<Weather> weathers) {
+		this.weathers = weathers;
 	}
 	
 }

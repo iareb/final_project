@@ -1,22 +1,20 @@
 package it.corso.service;
 
-import java.util.List;
-
-import it.corso.dto.HourlyTemperatureDto;
-import it.corso.dto.HourlyTimeDto;
 import it.corso.dto.WeatherDto;
-import it.corso.model.Weather;
-
 
 public interface WeatherService {
 	
-	Weather getWeatherById(int id);
+	// URL per le richieste all'API di Open-Meteo
+	String API_URL = "https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&daily&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";
+	String API_URL_CURRENT_WEATHER = "https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&daily&current=temperature_2m,wind_speed_10m";
+	String API_URL_HOURLY_WEATHER = "https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&daily&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";	
 	
-	WeatherDto getWeatherByCoordinates(double latitude, double longitude);
-	WeatherDto getWeatherByLocation(int locationId);
+	WeatherDto getWeatherById(int id);
+	void deleteWeatherById(int id);
+	WeatherDto getWeatherByLocationName(String name);
 	
-	List<HourlyTimeDto> getWeatherHours(int weatherId);
-	List<HourlyTemperatureDto> getWeatherTemperatues(int weatherId);
+	WeatherDto fetchWeatherData(int locationId);
+	WeatherDto fetchCurrentWeather(int locationId);
+	WeatherDto fetchHourlyWeather(int locationId);
 	
-
 }

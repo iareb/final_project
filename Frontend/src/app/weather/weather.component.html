@@ -1,89 +1,58 @@
-<div id="weatherCarousel" class="carousel slide m-5" data-mdb-ride="carousel" data-mdb-carousel-init>
-  <div class="carousel-indicators">
-    <button type="button" data-mdb-target="#weatherCarousel" data-mdb-slide-to="0" class="active bg-secondary"
-            aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-mdb-target="#weatherCarousel" data-mdb-slide-to="1" class="bg-secondary"
-            aria-label="Slide 2"></button>
-    <button type="button" data-mdb-target="#weatherCarousel" data-mdb-slide-to="2" class="bg-secondary"
-            aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner rounded-5">
-    <div class="carousel-item active">
-      <div class="d-flex justify-content-between align-items-center px-5 gradient-custom" style="height: 230px">
-        <div>
-          <h2 class="text-dark display-2"><strong>23°C</strong></h2>
-          <p class="text-dark mb-0">Messina, Italy</p>
-        </div>
-        <div>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu3.webp"
-               width="150px">
-        </div>
-      </div>
+<!--
+<div class="col">
+  <div class="card h-50">
+    <img class="card-img-top" src="" alt="Image unavailable">
+    <div class="card-body">
+      <p class="card-text text-center fw-bold">{{location.name}}</p>
+      <p class="card-text text-center">{{location.country}}</p>
     </div>
-    <div class="carousel-item">
-      <div class="d-flex justify-content-around text-center align-items-center px-5 bg-body-tertiary"
-           style="height: 230px">
-        <div class="flex-column">
-          <p class="small"><strong>21°C</strong></p>
-          <i class="fas fa-sun fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>12:00</strong></p>
-          <p class="mb-0 text-muted" style="font-size: .65rem;">PM</p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>2°C</strong></p>
-          <i class="fas fa-sun fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>1:00</strong></p>
-          <p class="mb-0 text-muted" style="font-size: .65rem;">PM</p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>20°C</strong></p>
-          <i class="fas fa-cloud fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>2:00</strong></p>
-          <p class="mb-0 text-muted" style="font-size: .65rem;">PM</p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>19°C</strong></p>
-          <i class="fas fa-cloud fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>3:00</strong></p>
-          <p class="mb-0 text-muted" style="font-size: .65rem;">PM</p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>18°C</strong></p>
-          <i class="fas fa-cloud-showers-heavy fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>4:00</strong></p>
-          <p class="mb-0 text-muted" style="font-size: .65rem;">PM</p>
-        </div>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <div class="d-flex justify-content-around text-center align-items-center px-5 bg-body-tertiary"
-           style="height: 230px">
-        <div class="flex-column">
-          <p class="small"><strong>21°C</strong></p>
-          <i class="fas fa-sun fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>Mon</strong></p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>20°C</strong></p>
-          <i class="fas fa-sun fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>Tue</strong></p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>16°C</strong></p>
-          <i class="fas fa-cloud fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>Wed</strong></p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>17°C</strong></p>
-          <i class="fas fa-cloud fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>Thu</strong></p>
-        </div>
-        <div class="flex-column">
-          <p class="small"><strong>18°C</strong></p>
-          <i class="fas fa-cloud-showers-heavy fa-2x mb-3" style="color: #ddd;"></i>
-          <p class="mb-0"><strong>Fri</strong></p>
-        </div>
-      </div>
+    <div class="card-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-dark" >Salva info</button>
     </div>
   </div>
 </div>
+-->
+<div>
+  <!-- Informazioni attuali -->
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="" class="img-fluid rounded-start" alt="Weather Icon">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ location.name }}, {{ location.country }}</h5>
+          <p class="card-text">Temperatura Attuale: {{ weather.currentTemperature }}°C</p>
+          <p class="card-text">Velocità del Vento Attuale: {{ weather.currentWindSpeed }} km/h</p>
+          <p class="card-text"><small class="text-muted">Aggiornato il {{ weather.timestamp | date:'short' }}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Informazioni orarie -->
+  <div id="hourlyWeatherCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div *ngFor="let hour of weather.hourlyWeather; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
+        <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+          <div class="text-center">
+            <h5>{{ hour.time | date:'shortTime' }}</h5>
+            <p>Temperatura: {{ hour.temperature }}°C</p>
+            <p>Umidità: {{ hour.humidity }}%</p>
+            <p>Velocità del Vento: {{ hour.windSpeed }} km/h</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#hourlyWeatherCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#hourlyWeatherCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </button>
+  </div>
+</div>
+
+

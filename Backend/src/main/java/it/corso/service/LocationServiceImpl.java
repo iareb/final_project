@@ -1,11 +1,12 @@
 package it.corso.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import it.corso.dao.LocationDao;
 import it.corso.dto.LocationDto;
 import it.corso.model.Location;
@@ -14,10 +15,10 @@ import it.corso.model.Location;
 public class LocationServiceImpl implements LocationService {
 	
 	@Autowired
-	LocationDao locationDao;
+	private LocationDao locationDao;
 	
 	@Autowired
-	ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 
 	@Override
 	public LocationDto getLocationById(int id) {
@@ -25,33 +26,27 @@ public class LocationServiceImpl implements LocationService {
 		if (!optional.isPresent()) {
 			return new LocationDto();
 		}
-		
-		Location locationDb = optional.get();
-		LocationDto locationDto = modelMapper.map(locationDb, LocationDto.class);
+		Location location = optional.get();
+		LocationDto locationDto = modelMapper.map(location, LocationDto.class);
 		return locationDto;
 	}
-
+	
 	@Override
 	public LocationDto getLocationByName(String name) {
 		Optional<Location> optional = locationDao.findByName(name);
 		if (!optional.isPresent()) {
 			return new LocationDto();
 		}
-		
-		Location locationDb = optional.get();
-		LocationDto locationDto = modelMapper.map(locationDb, LocationDto.class);
+		Location location = optional.get();
+		LocationDto locationDto = modelMapper.map(location, LocationDto.class);
 		return locationDto;
 	}
 
+
 	@Override
-	public LocationDto getLocationByCoordinates(double latitude, double longitude) {
-		Optional<Location> optional = locationDao.findByLatitudeAndLongitude(latitude, longitude);
-		if (!optional.isPresent()) {
-			return new LocationDto();
-		}
-		Location locationDb = optional.get();
-		LocationDto locationDto = modelMapper.map(locationDb, LocationDto.class);
-		return locationDto;
+	public List<LocationDto> getAllLocations() {
+		List<Location> locations = (List<Location>) locationDao.findAll();
+		List<LocationDto> locationsDto = modelMapper.map(locations, new TypeToken<List<LocationDto>>() {}.getType());
+		return locationsDto;
 	}
-	
 }

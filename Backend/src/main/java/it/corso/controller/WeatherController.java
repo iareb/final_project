@@ -1,19 +1,14 @@
 package it.corso.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import it.corso.dto.HourlyTemperatureDto;
-import it.corso.dto.HourlyTimeDto;
-import it.corso.dto.WeatherDetailsDto;
 import it.corso.dto.WeatherDto;
-import it.corso.model.Weather;
 import it.corso.service.WeatherService;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -27,57 +22,30 @@ public class WeatherController {
 	
 	@Autowired
 	private WeatherService weatherService;
-
+	
+	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getWeatherById(@PathParam("id") int id) {	
+	public Response getWeatherById(@PathParam("id") int id) {
 		try {
-			Weather weather = weatherService.getWeatherById(id);
+			WeatherDto weather = weatherService.getWeatherById(id);
 			return Response.status(Response.Status.OK).entity(weather).build();
+		} 
+		catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
-		catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}	
 	}
 	
-	@GET
-	@Path("/search")
+	@DELETE
+	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getWeatherByLatitudeAndLongitude(@QueryParam("latitude") double latitude, @QueryParam("longitude") double longitude) {
+	public Response deleteWeatherById(@PathParam("id") int id) {
 		try {
-			WeatherDto weather = weatherService.getWeatherByCoordinates(latitude, longitude);
-			return Response.status(Response.Status.OK).entity(weather).build();
-		} 
-		catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}	
-	}
-	
-	@GET
-	@Path("/location/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getWeatherByLocation(@PathParam("id") int locationId) {
-		try {
-			WeatherDto weather = weatherService.getWeatherByLocation(locationId);
-			return Response.status(Response.Status.OK).entity(weather).build();
-		} 
-		catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}	
-	}
-	
-	@GET
-	@Path("/{id}/times")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getWeatherHours(@PathParam("id") int id) {
-		try {
-			List<HourlyTimeDto> times = weatherService.getWeatherHours(id);
-			return Response.status(Response.Status.OK).entity(times).build();
+			weatherService.deleteWeatherById(id);
+			return Response.status(Response.Status.OK).build();
 		} 
 		catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -85,17 +53,59 @@ public class WeatherController {
 	}
 	
 	@GET
-	@Path("/{id}/temperatures")
+	@Path("/fetch/{locationId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getWeatherTemperatures(@PathParam("id") int id) {
+	public Response fetchWeatherData(@PathParam("locationId") int locationId) {
 		try {
-			List<HourlyTemperatureDto> temperatures = weatherService.getWeatherTemperatues(id);
-			return Response.status(Response.Status.OK).entity(temperatures).build();
+			WeatherDto weather = weatherService.fetchWeatherData(locationId);
+			return Response.status(Response.Status.OK).entity(weather).build();
 		} 
 		catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
-
+	
+	
+	@POST
+	@Path("/fetch/{locationId}/current")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response fetchCurrentWeatherData(@PathParam("locationId") int locationId) {
+		try {
+			WeatherDto weather = weatherService.fetchCurrentWeather(locationId);
+			return Response.status(Response.Status.OK).entity(weather).build();
+		} 
+		catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+	}
+	
+	@POST
+	@Path("/fetch/{locationId}/hourly")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response fetchHourlyWeatherData(@PathParam("locationId") int locationId) {
+		try {
+			WeatherDto weather = weatherService.fetchHourlyWeather(locationId);
+			return Response.status(Response.Status.OK).entity(weather).build();
+		} 
+		catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+	}
+	
+	@GET
+	@Path("/location")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getWeatherByLocationName(@QueryParam("name") String locationName) {
+		try {
+			WeatherDto weather = weatherService.getWeatherByLocationName(locationName);
+			return Response.status(Response.Status.OK).entity(weather).build();
+		} 
+		catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+	}
 }

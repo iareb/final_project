@@ -13,6 +13,7 @@ import it.corso.dao.UserDao;
 import it.corso.dto.UserDto;
 import it.corso.dto.UserLoginRequestDto;
 import it.corso.dto.UserRegistrationDto;
+import it.corso.dto.UserUpdateDto;
 import it.corso.model.User;
 
 @Service
@@ -82,9 +83,20 @@ public class UserServiceImpl implements UserService {
 		UserDto userDto = modelMapper.map(userDb, UserDto.class);
 		return userDto;
 	}
+	
+	@Override
+	public User getUserByEmail(String email) {
+		Optional<User> userOptional = userDao.findByEmail(email);	
+		if (!userOptional.isPresent()) {
+			return new User();
+		}
+		
+		User userDb = userOptional.get();
+		return userDb;
+	}
 
 	@Override
-	public UserDto getUserByEmail(String email) {
+	public UserDto getUserDtoByEmail(String email) {
 		Optional<User> userOptional = userDao.findByEmail(email);	
 		if (!userOptional.isPresent()) {
 			return new UserDto();
@@ -101,5 +113,46 @@ public class UserServiceImpl implements UserService {
 		List<UserDto> usersDto = modelMapper.map(users, new TypeToken<List<UserDto>>() {}.getType());
 		return usersDto;
 	}
+	
 
+	@Override
+	public void updateUserData(UserUpdateDto userDto) {
+		
+		Optional<User> optional = userDao.findByEmail(userDto.getEmail());
+		if (optional.isPresent()) {
+			
+			User userDb = optional.get();
+			userDb.setName(userDto.getName());
+			userDb.setLastName(userDto.getLastName());
+			userDb.setEmail(userDto.getEmail());
+			
+			if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+	            String sha256hex = DigestUtils.sha256Hex(userDto.getPassword());
+	            userDb.setPassword(sha256hex);
+			}
+			
+			userDao.save(userDb);
+		}
+
+	}
+
+	@Override
+	public void deleteUserById(int id) {
+		
+		Optional<User> optional = userDao.findById(id);
+		if (optional.isPresent()) {
+			userDao.delete(optional.get());
+		}
+
+	}
+
+	@Override
+	public void deleteUserByEmail(String email) {
+		
+		Optional<User> optional = userDao.findByEmail(email);
+		if (optional.isPresent()) {
+			userDao.delete(optional.get());
+		}
+	}
+	
 }

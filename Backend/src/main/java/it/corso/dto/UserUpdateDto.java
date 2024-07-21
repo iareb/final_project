@@ -1,6 +1,6 @@
 package it.corso.dto;
 
-public class UserDto {
+public class UserUpdateDto {
 	
 	private String name;
 	private String lastName;
